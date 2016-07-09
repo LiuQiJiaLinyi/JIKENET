@@ -12,11 +12,14 @@
 
 
 #import "JKGetPwdViewController.h"
+#import "WXApiObject.h"
+#import "WXApi.h"
+#import "WXUtil.h"
 
 #import <MJExtension/MJExtension.h>
 
 
-@interface JKLoginViewController ()<NSCoding>
+@interface JKLoginViewController ()<NSCoding,WXApiDelegate>
 {
 
     UITextField *txt_Name;
@@ -29,7 +32,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tabBarController.tabBar.hidden = YES;
     // Do any additional setup after loading the view.
+    [self setNav];
     self.navigationController.navigationBar.barTintColor=[UIColor colorWithRed:233.0/255.0 green:46.0/255.0 blue:106.0/255.0 alpha:1.0];
 
     [self addTitleViewWithTitle:@"登录"];
@@ -44,6 +49,26 @@
     tapGestureRecognizer.cancelsTouchesInView = NO;
     //将触摸事件添加到当前view
     [self.view addGestureRecognizer:tapGestureRecognizer];
+    
+}
+
+
+-(void)setNav
+{
+    self.navigationController.navigationBar.titleTextAttributes = @{NSFontAttributeName:[UIFont boldSystemFontOfSize:19],NSForegroundColorAttributeName:[UIColor whiteColor]};
+    self.navigationController.navigationBar.barTintColor=[UIColor colorWithRed:233.0/255.0 green:46.0/255.0 blue:106.0/255.0 alpha:1.0];
+    
+    UIButton *leftbtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [leftbtn addTarget:self action:@selector(backToMessageVC) forControlEvents:UIControlEventTouchUpInside];
+    [leftbtn setBackgroundImage:[UIImage imageNamed:@"nav_bar_left_new.png"] forState:UIControlStateNormal];
+    [leftbtn setFrame:CGRectMake( 0, 0, 12*kFloatSize, 17*kFloatSize)];
+    UIBarButtonItem *leftItem  =[[UIBarButtonItem alloc] initWithCustomView:leftbtn];
+    self.navigationItem.leftBarButtonItem = leftItem;
+}
+-(void)backToMessageVC
+{
+    _mainTabbr.selectedIndex = 0;
     
 }
 
@@ -83,6 +108,8 @@
     txt_Pwd=[self addMyUITextFeild:CGRectMake(75*MainSize, 13*MainSize, 200*MainSize, 15*MainSize)];
     [txt_Pwd setPlaceholder:@"输入密码"];
     [txt_Pwd setKeyboardType:UIKeyboardTypeDefault];
+    txt_Pwd.secureTextEntry = YES;
+    
     
     [pwdView addSubview:txt_Pwd];
     
@@ -141,7 +168,19 @@
     
 }
 
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
+    {
+        
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+        
+        self.extendedLayoutIncludesOpaqueBars = NO;
+        
+        self.modalPresentationCapturesStatusBarAppearance = NO;
+        
+    }
+}
 
 -(UIView *)addmyView:(CGRect )frame{
     
@@ -178,21 +217,35 @@
     
 }
 
-
--(void)btnClickWxLogin{
-
+#pragma mark --微信登录--
+-(void)btnClickWxLogin
+{
+    
+    if ([WXApi isWXAppInstalled])
+    {
+        
+    }
+    else
+    {
+//        [self showAlterView:@"提示" massage:@"微信客户端未安装，即将进入网页版登陆"];
+        
+    
+    }
+    
+    SendAuthReq* req =[[SendAuthReq alloc ] init ] ;
+    req.scope = @"snsapi_userinfo,snsapi_base" ;
+    req.state = @"0744";
+    //第三方向微信终端发送一个SendAuthReq消息结构
+    [WXApi sendAuthReq:req viewController:self delegate:self];
  
     
 }
 
--(void)btnClickForget{
+-(void)btnClickForget
+{
 
     JKGetPwdViewController *getpwdVC=[[JKGetPwdViewController alloc]init];
     [self.navigationController pushViewController:getpwdVC animated:YES];
-    
-    
-   
-    
 }
 
 -(void)btnClickRegister{
@@ -238,7 +291,11 @@
     [[JKProgressHuD shareJKProgressHuD]showProgreessHuD:@"登录中" andView:self.view];
 
     
+    if ([self judgeCodeAndPwd:txt_Name.text PWD:txt_Pwd.text])
+    {
+    
     NSDictionary *dic=@{@"tel":txt_Name.text,@"pwd":txt_Pwd.text};
+    
     
     NSString *url=[NSString stringWithFormat:@"%@%@",MainUrl,URL_Userlogin];
     
@@ -248,7 +305,9 @@
         [[JKProgressHuD shareJKProgressHuD]dismiss];
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             
+            
             NSDictionary *dictTemp = (NSDictionary *)responseObject;
+            
             //code:状态码(200成功 400错误 401不存在该用户 402密码错误)
             NSString * codeStr = dictTemp[@"code"];
             
@@ -267,26 +326,21 @@
                   
                     [data writeToFile:[self getFilePathWithModelKey:@"userInfor"] atomically:YES];
                     
-                    
-                    
                 }
                     break;
                 case 400:
                 {
-                    UIAlertView * illegalUser = [[UIAlertView alloc] initWithTitle:@"提示" message:@"未知错误！" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
-                    [illegalUser show];
+                    [self showAlterView:@"提示" massage:@"未知错误！400"];
                 }
                     break;
                 case 401:
                 {
-                    UIAlertView * illegalUser = [[UIAlertView alloc] initWithTitle:@"提示" message:@"用户不存在" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
-                    [illegalUser show];
+                    [self showAlterView:@"提示" massage:@"用户不存在"];
                 }
                     break;
                 case 402:
                 {
-                    UIAlertView * illegalUser = [[UIAlertView alloc] initWithTitle:@"提示" message:@"密码输入错误请重新输入！" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
-                    [illegalUser show];
+                    [self showAlterView:@"提示" massage:@"密码输入错误请重新输入！"];
                 }
                     break;
                     
@@ -304,7 +358,56 @@
         [[JKProgressHuD shareJKProgressHuD]showProgreessText:@"网络错误" andView:self.view];
         
     }];
+        
+     
+        
+        
+    }
+}
+
+-(void)successLogin:(NSString *)url{
     
+    
+    [[AFAppDotNetAPIClient sharedClient]GET:url parameters:nil progress:nil success:^(NSURLSessionDataTask *operation,id responseObject){
+        
+        [[JKProgressHuD shareJKProgressHuD]dismiss];
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"WXLogin" object:responseObject];
+            
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask *operation, NSError *error){
+        
+        [[JKProgressHuD shareJKProgressHuD]showProgreessText:@"网络错误" andView:self.view];
+        
+    }];
+    
+    
+}
+
+
+#pragma mark --判断输入是否合法
+-(BOOL)judgeCodeAndPwd:(NSString *)tele PWD:(NSString *)pwd
+{
+    BOOL jduge ;
+    NSInteger numberOftele = tele.length;
+    
+    
+    if (numberOftele <(NSInteger)11)
+    {
+        UIAlertView * alter = [[UIAlertView alloc] initWithTitle:@"提示" message:@"手机号不能小于11位" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alter show];
+        jduge = NO;
+    }
+    else
+    {
+        jduge = YES;
+    }
+    
+    
+    
+    return jduge;
 }
 
 //得到Document目录
@@ -316,6 +419,15 @@
     return [[array objectAtIndex:0] stringByAppendingPathComponent:modelkey];
     
     
+}
+
+
+-(void)showAlterView:(NSString * )title massage:(NSString * )massage
+{
+    UIAlertView * alter = [[UIAlertView alloc] initWithTitle:title message:massage delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+    
+    [alter show];
+
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

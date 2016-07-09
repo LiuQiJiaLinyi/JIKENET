@@ -16,7 +16,7 @@
 {
     UIView * headView;
     UITapGestureRecognizer * tapIt;
-    BOOL userIsLogIn;//记录用户是否已经登录
+    
 }
 @end
 
@@ -24,45 +24,15 @@
 @implementation personViewController
 -(void)viewDidLoad
 {
-    [self gotTheUserState];
-    
     self.view.backgroundColor = [UIColor whiteColor];
-    [self judgeLogIn];
     //[self setNav];
     [self reciveDataFromInternet];
     
 }
--(void)gotTheUserState
+-(void)gotTheUserInformation
 {
-    NSString * logState = [[NSUserDefaults standardUserDefaults] objectForKey:@"userLogState"];
-    
-    if ([logState isEqualToString:@"1"]) {
-        userIsLogIn = YES;
-    }
-    else
-    {
-        userIsLogIn = NO;
-    }
+   
 }
-
-
--(void)judgeLogIn
-{
-    if (userIsLogIn)
-    {
-        JKLoginViewController * login = [[JKLoginViewController alloc] init];
-        [self.view addSubview:login.view];
-        userIsLogIn = YES;
-        [[NSUserDefaults standardUserDefaults] setObject:(id)@"1" forKey:@"userLogState"];
-    }
-    else
-    {
-        // [self buildUI];
-    }
-    
-    
-}
-
 
 -(void)setNav
 {

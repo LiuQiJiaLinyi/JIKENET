@@ -14,7 +14,9 @@
 #import "JKLoginViewController.h"
 
 @interface AppDelegate ()
-
+{
+  BOOL userIsLogIn;//记录用户是否已经登录
+}
 @end
 
 @implementation AppDelegate
@@ -80,9 +82,31 @@
     UINavigationController *shopCarNav = [[UINavigationController alloc]initWithRootViewController:shopCarVC];
     
     //个人中心
-    personViewController* personVc=[[personViewController alloc]init];
-    personVc.tabBarItem=[[UITabBarItem alloc]initWithTitle:@"个人中心" image:[UIImage imageNamed:@"personVC.png"] selectedImage:[UIImage imageNamed:@"personVC_sel.png"]];
-    UINavigationController* personNav=[[UINavigationController alloc]initWithRootViewController:personVc];
+    
+    
+    NSString * logState = [[NSUserDefaults standardUserDefaults] objectForKey:@"userLogState"];
+    
+    UINavigationController* personNav;
+    if ([logState isEqualToString:@"1"])
+    {
+        personViewController* personVc=[[personViewController alloc]init];
+        personVc.tabBarItem=[[UITabBarItem alloc]initWithTitle:@"个人中心" image:[UIImage imageNamed:@"personVC.png"] selectedImage:[UIImage imageNamed:@"personVC_sel.png"]];
+        personNav=[[UINavigationController alloc]initWithRootViewController:personVc];
+    }
+    else
+    {
+        JKLoginViewController * jklogin = [[JKLoginViewController alloc] init];
+        jklogin.tabBarItem=[[UITabBarItem alloc]initWithTitle:@"登录" image:[UIImage imageNamed:@"personVC.png"] selectedImage:[UIImage imageNamed:@"personVC_sel.png"]];
+        jklogin.mainTabbr = _mainTab;
+        
+        personNav=[[UINavigationController alloc]initWithRootViewController:jklogin];
+        
+        
+    }
+    
+//    personViewController* personVc=[[personViewController alloc]init];
+//    personVc.tabBarItem=[[UITabBarItem alloc]initWithTitle:@"个人中心" image:[UIImage imageNamed:@"personVC.png"] selectedImage:[UIImage imageNamed:@"personVC_sel.png"]];
+//    UINavigationController* personNav=[[UINavigationController alloc]initWithRootViewController:personVc];
     
     
     

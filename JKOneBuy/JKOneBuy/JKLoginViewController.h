@@ -10,4 +10,5 @@
 
 @interface JKLoginViewController : JKRootViewController
 
+@property (nonatomic,weak)UITabBarController * mainTabbr;
 @end
