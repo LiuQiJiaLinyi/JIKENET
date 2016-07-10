@@ -100,6 +100,19 @@
     shoppingCarView.backgroundColor = [UIColor redColor];
     shoppingCarView.userInteractionEnabled =YES;
     shoppingCarView.layer.cornerRadius = (38 * kWidthScale)/2;
+    UIImage * iamge = [UIImage imageNamed:@"shoppingCart"];
+    
+    CGFloat scale = [[UIScreen mainScreen]scale];
+    
+    //UIGraphicsBeginImageContext(newSize);
+    UIGraphicsBeginImageContextWithOptions(shoppingCarView.frame.size, NO, scale);
+    [iamge drawInRect:CGRectMake(0,0,shoppingCarView.frame.size.width,shoppingCarView.frame.size.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    
+    
+    shoppingCarView.backgroundColor = [UIColor colorWithPatternImage:newImage];
     
     UIPanGestureRecognizer * panPress = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(shoppingCartView:)];
     panPress.maximumNumberOfTouches = 1;
@@ -408,6 +421,8 @@ static NSString *jksortcellID=@"sortCell";
     }
     
     ShoppingCartViewController * shoppingviewcontr = [[ShoppingCartViewController alloc] init];
+    shoppingviewcontr.hidesBottomBarWhenPushed=NO;
+    shoppingviewcontr.str_identif=@"LQJJKSortViewController";
     
     [self.navigationController pushViewController:shoppingviewcontr animated:YES];
 }

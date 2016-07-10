@@ -382,6 +382,42 @@
 
 #pragma mark ---点击广告页---
 -(void)headOneDollarADtotypleview:(ADModel *)model{
+    NSString *str_LinkType=[NSString stringWithFormat:@"%@",model.LinkType];
+    NSString *str_linkurl=[NSString stringWithFormat:@"%@",model.linkurl];
+    NSLog(@"%@",str_linkurl);
+    if (str_linkurl==nil||[str_linkurl isEqualToString:@"(null)"]||str_linkurl.length<=0) {
+        if ([str_LinkType isEqualToString:@"3"]) {
+//            mallViewController* mallVc=[[mallViewController alloc]init];
+//            [mallVc setHidesBottomBarWhenPushed:YES];
+//            [self.navigationController pushViewController:mallVc animated:YES];
+        }
+        return;
+        
+    }
+    //1是跳转网页，2是跳到商品详情,3,商城
+    if ([str_LinkType isEqualToString:@"1"]) {
+        OneDetailsLookWebView *web_look=[[OneDetailsLookWebView alloc]init];
+        //    web_look.str_to_url=[NSString stringWithFormat:BBG_ONEJSGS,@"1","1"];
+        web_look.str_to_url=str_linkurl;
+        web_look.hidesBottomBarWhenPushed=YES;
+        [self.navigationController pushViewController:web_look animated:YES];
+        
+    }else if ([str_LinkType isEqualToString:@"2"]){
+//        NSUserDefaults* ud=[NSUserDefaults standardUserDefaults];
+        NSString* str_weid=[NSString stringWithFormat:@"%@",[UserDefaults objectForKey:@"weid"]];
+        
+        OneDetailsViewController *detailsView=[[OneDetailsViewController alloc]init];
+        detailsView.str_one_yyid=[NSString stringWithFormat:@"%@",str_linkurl];
+        detailsView.str_one_weid=str_weid;
+        detailsView.hidesBottomBarWhenPushed=YES;
+        [self.navigationController pushViewController:detailsView animated:YES];
+        
+    }else{
+//        mallViewController* mallVc=[[mallViewController alloc]init];
+//        [mallVc setHidesBottomBarWhenPushed:YES];
+//        [self.navigationController pushViewController:mallVc animated:YES];
+    }
+
     
 }
 

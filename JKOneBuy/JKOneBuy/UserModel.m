@@ -7,7 +7,8 @@
 //
 
 #import "UserModel.h"
+#import <MJExtension/MJExtension.h>
 
 @implementation UserModel
-
+MJCodingImplementation
 @end

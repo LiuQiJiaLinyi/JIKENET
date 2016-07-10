@@ -9,6 +9,8 @@
 #import "JKRootViewController.h"
 #import "GlobalObject.h"
 #import <UIImage+GIF.h>
+#import <MJExtension/MJExtension.h>
+#import "UserModel.h"
 
 @interface JKRootViewController ()
 
@@ -71,6 +73,24 @@
     }else{
         self.navigationItem.rightBarButtonItem = item;
     }
+}
+-(BOOL)isLogin{
+
+    
+    
+    NSUserDefaults  *userDefault=[NSUserDefaults standardUserDefaults];
+    
+    NSData *userdata=[userDefault objectForKey:@"userModel"];
+   UserModel *userModel=[NSKeyedUnarchiver unarchiveObjectWithData:userdata];
+    
+    if (userModel.userlevel) {
+        return YES;
+    }else{
+    
+        return NO;
+    }
+    
+    
 }
 
 

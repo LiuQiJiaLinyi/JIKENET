@@ -21,7 +21,7 @@
     self.view.backgroundColor = [UIColor redColor];
     
     //    NSUserDefaults *userDefauts=[NSUserDefaults standardUserDefaults];
-    //    NSString *token = [userDefauts objectForKey:@"token"];
+//    NSString *token = [userDefauts objectForKey:@"token"];
     
     _type_web=BBG_YYGRESULTS;
     _initial_url=BBG_YYGRESULTS;

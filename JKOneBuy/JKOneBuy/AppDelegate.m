@@ -14,7 +14,9 @@
 #import "JKLoginViewController.h"
 
 @interface AppDelegate ()
-
+{
+    BOOL userLoginState;//1登录0没有登录记录用户是否地登录
+}
 @end
 
 @implementation AppDelegate
@@ -57,11 +59,12 @@
 -(void)gotoGuide{
     
 }
+
 - (void)setupTabViewController{
     
     
     self.mainTab=[[MainTabBarViecController alloc]init];
-    
+//    self.mainTab.tabBar.backgroundColor=[UIColor redColor];
     
     
     //主页
@@ -79,10 +82,32 @@
     shopCarVC.tabBarItem = [[UITabBarItem alloc]initWithTitle:@"购物车" image:[UIImage imageNamed:@"shopingcar.png"] selectedImage:[UIImage imageNamed:@"shopingcar_sel.png"]];
     UINavigationController *shopCarNav = [[UINavigationController alloc]initWithRootViewController:shopCarVC];
     
-    //个人中心
+    
+    //判断是否登录
+    NSString * userStateStr=[[NSUserDefaults standardUserDefaults] objectForKey:@"userState"];
+    
+    UINavigationController* personNav;
+    
+    if ([userStateStr isEqualToString:@"1"])
+    {
     personViewController* personVc=[[personViewController alloc]init];
     personVc.tabBarItem=[[UITabBarItem alloc]initWithTitle:@"个人中心" image:[UIImage imageNamed:@"personVC.png"] selectedImage:[UIImage imageNamed:@"personVC_sel.png"]];
-    UINavigationController* personNav=[[UINavigationController alloc]initWithRootViewController:personVc];
+    personNav=[[UINavigationController alloc]initWithRootViewController:personVc];
+        
+    }
+    else
+    {
+        JKLoginViewController * jkloginVC = [[JKLoginViewController alloc]init];
+        jkloginVC.tabBarItem=[[UITabBarItem alloc]initWithTitle:@"个人中心" image:[UIImage imageNamed:@"personVC.png"] selectedImage:[UIImage imageNamed:@"personVC_sel.png"]];
+        
+        jkloginVC.mainTabbar = _mainTab;
+        jkloginVC.weakShoppingCart = shopCarVC;
+
+        personNav=[[UINavigationController alloc]initWithRootViewController:jkloginVC];
+    }
+    
+    //个人中心
+    
     
     
     
@@ -90,7 +115,8 @@
     
     [[UITabBar appearance] setTintColor:[UIColor colorWithRed:233.0/255.0 green:46.0/255.0 blue:106.0/255.0 alpha:1.0]];
     
-     
+//    [[UITabBar appearance]setBackgroundColor:[UIColor redColor]];
+    
     
     self.mainTab.delegate=self;
     
@@ -164,10 +190,25 @@
             SendAuthResp *aresp = (SendAuthResp *)resp;
             NSString *code = aresp.code;
             NSString *url = [NSString stringWithFormat:@"https://api.weixin.qq.com/sns/oauth2/access_token?appid=%@&secret=%@&code=%@&grant_type=authorization_code",APP_ID,APP_SECRET,code];
-//            [self sendWXShouQuanRequest:url];
+            [self sendWXShouQuanRequest:url];
         }else {
         }
     }
+}
+-(void)sendWXShouQuanRequest:(NSString *)url{
+    [JKWeixinLoginRequest shareInstance].delegate = self;
+    [[JKWeixinLoginRequest shareInstance] sendWeixinLoginRequestURL:url];
+   }
+-(void)weixinLoginSuccess:(NSMutableDictionary *)dic{
+    NSDictionary *dict = dic;
+    NSString *access_token = [dict objectForKey:@"access_token"];
+    NSString *openid = [dict objectForKey:@"openid"];
+    NSString *url = [NSString stringWithFormat:@"https://api.weixin.qq.com/sns/userinfo?access_token=%@&openid=%@",access_token,openid];
+//    [self getUserInfoRequest:url];
+}
+
+-(void)weixinLoginFail:(NSMutableDictionary *)dic{
+//    [self weixinloginFail];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

@@ -10,7 +10,8 @@
 #import "MainTabBarViecController.h"
 #import "WXApi.h"
 #import "define.h"
-@interface AppDelegate : UIResponder <UIApplicationDelegate,UITabBarControllerDelegate,WXApiDelegate>
+#import "JKWeixinLoginRequest.h"
+@interface AppDelegate : UIResponder <UIApplicationDelegate,UITabBarControllerDelegate,WXApiDelegate,JKWeixinRequestDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property(retain,nonatomic)MainTabBarViecController* mainTab;

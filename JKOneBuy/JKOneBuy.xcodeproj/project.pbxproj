@@ -97,6 +97,9 @@
 		820CA4101D2DF96D0033BF61 /* PsersonalTapV.m in Sources */ = {isa = PBXBuildFile; fileRef = 820CA3F91D2DF96D0033BF61 /* PsersonalTapV.m */; };
 		8221A78C1D2CFF0A00EFED17 /* JKCategoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8221A7891D2CFF0A00EFED17 /* JKCategoryCell.m */; };
 		8221A78D1D2CFF0A00EFED17 /* LQJJKSortViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8221A78B1D2CFF0A00EFED17 /* LQJJKSortViewController.m */; };
+		829B36AA1D30EC00005D24AD /* JKWeixinLoginRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 829B36A91D30EC00005D24AD /* JKWeixinLoginRequest.m */; };
+		829B36AD1D30ED0B005D24AD /* JKRequestManger.m in Sources */ = {isa = PBXBuildFile; fileRef = 829B36AC1D30ED0B005D24AD /* JKRequestManger.m */; };
+		82E8B7C71D3215240089BD87 /* JKRegisterVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 82E8B7C61D3215240089BD87 /* JKRegisterVC.m */; };
 		9B9111D0F93A9DD3955D47C9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 564330BBF962A5F351B43511 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -223,7 +226,7 @@
 		7F1ED8DB1D2A4A0300B184DB /* JKGetPwdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKGetPwdViewController.h; sourceTree = "<group>"; };
 		7F1ED8DC1D2A4A0300B184DB /* JKGetPwdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKGetPwdViewController.m; sourceTree = "<group>"; };
 		7F1ED8DE1D2A4A0D00B184DB /* JKLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKLoginViewController.h; sourceTree = "<group>"; };
-		7F1ED8DF1D2A4A0D00B184DB /* JKLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKLoginViewController.m; sourceTree = "<group>"; };
+		7F1ED8DF1D2A4A0D00B184DB /* JKLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKLoginViewController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 1; };
 		7F563EDB1D17B66A00F52800 /* JKOneBuy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JKOneBuy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F563EDF1D17B66B00F52800 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		7F563EE11D17B66B00F52800 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -274,6 +277,12 @@
 		8221A7891D2CFF0A00EFED17 /* JKCategoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKCategoryCell.m; sourceTree = "<group>"; };
 		8221A78A1D2CFF0A00EFED17 /* LQJJKSortViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQJJKSortViewController.h; sourceTree = "<group>"; };
 		8221A78B1D2CFF0A00EFED17 /* LQJJKSortViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQJJKSortViewController.m; sourceTree = "<group>"; };
+		829B36A81D30EC00005D24AD /* JKWeixinLoginRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKWeixinLoginRequest.h; sourceTree = "<group>"; };
+		829B36A91D30EC00005D24AD /* JKWeixinLoginRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKWeixinLoginRequest.m; sourceTree = "<group>"; };
+		829B36AB1D30ED0B005D24AD /* JKRequestManger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKRequestManger.h; sourceTree = "<group>"; };
+		829B36AC1D30ED0B005D24AD /* JKRequestManger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKRequestManger.m; sourceTree = "<group>"; };
+		82E8B7C51D3215240089BD87 /* JKRegisterVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKRegisterVC.h; sourceTree = "<group>"; };
+		82E8B7C61D3215240089BD87 /* JKRegisterVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKRegisterVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -595,6 +604,7 @@
 		7F1ED8D01D2A2ECA00B184DB /* JKLogin */ = {
 			isa = PBXGroup;
 			children = (
+				829B36A71D30EBD9005D24AD /* WXLoginrequst */,
 				7F1ED8D31D2A2EF400B184DB /* Controller */,
 				7F1ED8D21D2A2EEF00B184DB /* View */,
 				7F1ED8D11D2A2EE300B184DB /* Model */,
@@ -621,6 +631,8 @@
 		7F1ED8D31D2A2EF400B184DB /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				82E8B7C51D3215240089BD87 /* JKRegisterVC.h */,
+				82E8B7C61D3215240089BD87 /* JKRegisterVC.m */,
 				7F1ED8DE1D2A4A0D00B184DB /* JKLoginViewController.h */,
 				7F1ED8DF1D2A4A0D00B184DB /* JKLoginViewController.m */,
 				7F1ED8DB1D2A4A0300B184DB /* JKGetPwdViewController.h */,
@@ -887,6 +899,17 @@
 			path = LQJSortCell;
 			sourceTree = "<group>";
 		};
+		829B36A71D30EBD9005D24AD /* WXLoginrequst */ = {
+			isa = PBXGroup;
+			children = (
+				829B36AB1D30ED0B005D24AD /* JKRequestManger.h */,
+				829B36AC1D30ED0B005D24AD /* JKRequestManger.m */,
+				829B36A81D30EC00005D24AD /* JKWeixinLoginRequest.h */,
+				829B36A91D30EC00005D24AD /* JKWeixinLoginRequest.m */,
+			);
+			name = WXLoginrequst;
+			sourceTree = "<group>";
+		};
 		9FEF06D120117491FB2E0B38 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -966,7 +989,7 @@
 				TargetAttributes = {
 					7F563EDA1D17B66A00F52800 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = YN758MB6XU;
+						DevelopmentTeam = 4T628VP2RU;
 					};
 					7F563EF31D17B66B00F52800 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -1119,6 +1142,7 @@
 				7FFE68021D1BAFB100363335 /* JKSortViewController.m in Sources */,
 				18CEA2B71D18E6CE00DE2944 /* AFAppDotNetAPIClient.m in Sources */,
 				18CEA2B61D18E6CE00DE2944 /* AFJsonAppApiClient.m in Sources */,
+				829B36AD1D30ED0B005D24AD /* JKRequestManger.m in Sources */,
 				18CEA2C01D18E8D700DE2944 /* ShoppingCartViewController.m in Sources */,
 				18EBF64A1D21388A00C78ABE /* OneLuckuserModel.m in Sources */,
 				820CA4101D2DF96D0033BF61 /* PsersonalTapV.m in Sources */,
@@ -1127,6 +1151,7 @@
 				18CEA2BD1D18E8CC00DE2944 /* personViewController.m in Sources */,
 				18CCD0D91D20C4330086FE84 /* OneLuckblistModel.m in Sources */,
 				18CEA29E1D18E5A100DE2944 /* JKProgressHuD.m in Sources */,
+				82E8B7C71D3215240089BD87 /* JKRegisterVC.m in Sources */,
 				1876A4B81D2B7EB0005E58EF /* shopCarCell.m in Sources */,
 				7F1ED8DD1D2A4A0300B184DB /* JKGetPwdViewController.m in Sources */,
 				18CCD0DC1D20C4580086FE84 /* OneProtypeModel.m in Sources */,
@@ -1144,6 +1169,7 @@
 				18CEA2A21D18E61300DE2944 /* GlobalObject.m in Sources */,
 				18CEA2C31D18E8E500DE2944 /* LatestAnnouncedViewController.m in Sources */,
 				18CEA2AF1D18E65900DE2944 /* RecomModel.m in Sources */,
+				829B36AA1D30EC00005D24AD /* JKWeixinLoginRequest.m in Sources */,
 				1876A4C01D2BD32D005E58EF /* OneLookLuckNumberView.m in Sources */,
 				7F563EE01D17B66B00F52800 /* main.m in Sources */,
 				8221A78D1D2CFF0A00EFED17 /* LQJJKSortViewController.m in Sources */,

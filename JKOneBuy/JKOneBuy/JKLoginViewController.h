@@ -7,7 +7,11 @@
 //
 
 #import "JKRootViewController.h"
+@class ShoppingCartViewController;
+
 
 @interface JKLoginViewController : JKRootViewController
 
+@property (nonatomic ,weak)UITabBarController*mainTabbar;
+@property (nonatomic,weak)ShoppingCartViewController * weakShoppingCart;
 @end

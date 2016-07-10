@@ -10,13 +10,17 @@
 #import "define.h"
 #import "PersonalCenter/PsersonalTapV.h"
 #import "JKLoginViewController.h"
+#import <UIImageView+WebCache.h>
 
+#import "JKLoginViewController.h"
 
 @interface personViewController()
 {
     UIView * headView;
     UITapGestureRecognizer * tapIt;
-    BOOL userIsLogIn;//记录用户是否已经登录
+    NSDictionary * userInfor;
+    UIImageView * avaterImage;
+    
 }
 @end
 
@@ -24,45 +28,22 @@
 @implementation personViewController
 -(void)viewDidLoad
 {
-    [self gotTheUserState];
     
+    [super viewDidLoad];
+    
+    [self addTitleViewWithTitle:@"个人中心"];
+    self.navigationController.navigationBar.barTintColor=[GlobalObject colorWithHexString:@"#ED4D80"];
+    
+
+    
+
     self.view.backgroundColor = [UIColor whiteColor];
-    [self judgeLogIn];
     //[self setNav];
+    [self buildUI];
+    [self gotUserInfor];
+    
     [self reciveDataFromInternet];
-    
 }
--(void)gotTheUserState
-{
-    NSString * logState = [[NSUserDefaults standardUserDefaults] objectForKey:@"userLogState"];
-    
-    if ([logState isEqualToString:@"1"]) {
-        userIsLogIn = YES;
-    }
-    else
-    {
-        userIsLogIn = NO;
-    }
-}
-
-
--(void)judgeLogIn
-{
-    if (userIsLogIn)
-    {
-        JKLoginViewController * login = [[JKLoginViewController alloc] init];
-        [self.view addSubview:login.view];
-        userIsLogIn = YES;
-        [[NSUserDefaults standardUserDefaults] setObject:(id)@"1" forKey:@"userLogState"];
-    }
-    else
-    {
-        // [self buildUI];
-    }
-    
-    
-}
-
 
 -(void)setNav
 {
@@ -78,19 +59,35 @@
     UIBarButtonItem *leftItem  =[[UIBarButtonItem alloc] initWithCustomView:leftbtn];
     self.navigationItem.leftBarButtonItem = leftItem;
 }
+
+-(void)backToMessageVC
+{
+
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
     {
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.extendedLayoutIncludesOpaqueBars = NO;
+    self.modalPresentationCapturesStatusBarAppearance = NO;
+    }
+    
+    if ([self isLogin]) {
+
+    }else{
         
-        self.edgesForExtendedLayout = UIRectEdgeNone;
+        JKLoginViewController *loginVC=[[JKLoginViewController alloc]init];
         
-        self.extendedLayoutIncludesOpaqueBars = NO;
-        
-        self.modalPresentationCapturesStatusBarAppearance = NO;
+        [self.navigationController pushViewController:loginVC animated:YES];
+       
         
     }
+
 }
+
+#pragma mark --搭建UI--
 -(void)buildUI
 {
     headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,[UIScreen mainScreen].bounds.size.width,110*kFloatSize)];
@@ -102,7 +99,7 @@
     [headView addGestureRecognizer:tapgesture];
     tapgesture.numberOfTouchesRequired = 1;
     
-    UIImageView * avaterImage = [[UIImageView alloc] initWithFrame:CGRectMake(headView.bounds.size.width/2 - (26 *kFloatSize), 12 * kFloatSize, 52 *kFloatSize, 52 *kFloatSize)];
+    avaterImage = [[UIImageView alloc] initWithFrame:CGRectMake(headView.bounds.size.width/2 - (26 *kFloatSize), 12 * kFloatSize, 52 *kFloatSize, 52 *kFloatSize)];
     avaterImage.layer.cornerRadius = (52 * kFloatSize) /2;
     [avaterImage setImage:[UIImage imageNamed:@"personal_head_image"]];
     
@@ -145,6 +142,59 @@
     
 }
 
+#pragma mark-
+#pragma mark --从文件userInformation中解档（储存为字典）
+/* IsAgent = 0;
+ IsStock = 0;
+ IsSupplier = 0;
+ WechatCount = 0;
+ attach = "\U73ed\U7ea7";
+ bossid = www159net;
+ city = "\U5eca\U574a\U5e02";
+ code = 200;
+ confirmbalance = "400.02";
+ country = "\U4e2d\U56fd";
+ hasProp = 0;
+ headimgurl = "http://wx.qlogo.cn/mmopen/ajNVdqHZLLDt4dpBPdyAy6NgXqR37Ku1f972CWx15P8ZfibxdJia2rKUK1gntxqVLicgB9SoGKzliaqB9oSW7DV5Gg/0";
+ isblack = 0;
+ level = 2;
+ mastertime = "2016-06-08 15:49:19";
+ mobilephone = 15263986077;
+ monitornum = www159net;
+ name = "\U6587\U7533";
+ nickname = "\U9f99\U4e95\U8336";
+ planbalance = "400.02";
+ province = "\U6cb3\U5317\U7701";
+ stocktime = "0001-01-01 00:00:00";
+ userlevel = 1;
+ wechat = wenshen;
+ weid = nBcWr11319;
+ xuehao = 123222;
+ */
+-(void)gotUserInfor
+{
+    NSData *_data = [[NSData alloc] initWithContentsOfFile:[self getFilePathWithModelKey:@"userInformation"]];
+    
+    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:_data];
+    userInfor = [unarchiver decodeObjectForKey:@"userInformation"];
+    
+    NSString * iamgeUrl = userInfor[@"headimgurl"];
+    
+    NSURL * imageUrl = [NSURL URLWithString:iamgeUrl];
+    
+    [avaterImage sd_setImageWithURL:imageUrl placeholderImage:[UIImage imageNamed:@"personal_head_image"]];
+    
+    [unarchiver finishDecoding];
+}
+    //得到Document目录
+-(NSString *)getFilePathWithModelKey:(NSString *)modelkey
+{
+ NSArray *array =  NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    
+NSLog(@"%@,%s",[[array objectAtIndex:0] stringByAppendingPathComponent:modelkey],__FUNCTION__);
+    
+return [[array objectAtIndex:0] stringByAppendingPathComponent:modelkey];
+}
 /*!
  *  @author zhou, 16-07-07 08:07:23
  *
@@ -161,8 +211,6 @@
     //       // CGPoint location = [gesture locationInView:gesture.view.superview];
     //        shoppingCarView.center = locationXY;
     //    }
-    
-    NSLog(@"%s,%@",__FUNCTION__,@"点击tapview触发");
     long tagGes = gesture.view.tag;
     
     switch (tagGes) {

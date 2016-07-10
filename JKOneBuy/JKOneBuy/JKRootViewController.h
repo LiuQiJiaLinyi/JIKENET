@@ -15,9 +15,7 @@
 @class MBProgressHUD;
 @interface JKRootViewController : UIViewController{
 
-
 }
-
 
 //设置标题
 -(void)addTitleViewWithTitle:(NSString *)title;
@@ -27,7 +25,7 @@
 -(void)addTitleViewWithTitle:(NSString *)title imageName:(NSString *)imageName selectedimageName:(NSString *)selectedimageName selector:(SEL)selector location:(BOOL)isLeft andFrame:(CGRect)frame;
 
 
-
+-(BOOL)isLogin;
 
 
 

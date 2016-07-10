@@ -142,7 +142,9 @@
 }
 -(void)tapAdIMage:(UITapGestureRecognizer*)tap
 {
-    ADModel * model=[self.adModelArr objectAtIndex:tap.view.tag];
+     ADModel * model=[ADModel mj_objectWithKeyValues:[self.adModelArr objectAtIndex:tap.view.tag]];
+    
+
     if (self.selectADModel!=nil) {
         self.selectADModel(model);
     }

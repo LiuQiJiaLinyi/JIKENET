@@ -14,6 +14,9 @@
 #import "JKYYPaySuccessController.h"
 #import "JKCommonWebView.h"
 #import "JKLoginViewController.h"
+#import "homeSortVIewController.h"
+
+
 @interface ShoppingCartViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 {
     UIButton         * btn_edit;
@@ -25,6 +28,7 @@
     UIView           * bottomView;
     UIButton         * allSelectBtn;
     UIButton         * setBtn;
+    UIButton         * btn_back;
     
     NSDictionary     *_payDict;   //保存提交订单的返回信息
     
@@ -34,4 +38,8 @@
     UIView           *empty_bac_view;   //数据为空的view
 }
 
+
+@property (nonatomic,strong)NSString *str_identif;
+
+-(void)Click_setOrder:(UIButton*)btn;
 @end

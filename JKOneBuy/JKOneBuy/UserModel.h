@@ -21,10 +21,6 @@
 @property(assign,nonatomic)NSString * confirmbalance;
 @property(assign,nonatomic)NSString * userlevel;
 
-@property(assign,nonatomic)BOOL IsSupplier;
-@property(assign,nonatomic)BOOL IsStock;
-@property(assign,nonatomic)BOOL isblack;
-@property(assign,nonatomic)BOOL hasProp;
-@property(assign,nonatomic)BOOL IsAgent;
+
 
 @end

@@ -16,16 +16,21 @@
 #import "shopCarCell.h"
 
 #define BBGSIGNKEY @"native159netnative159netnative159net"
+#define kWidthScale [UIScreen mainScreen].bounds.size.width/320.f
+
 @implementation ShoppingCartViewController
 //加载导航栏
 -(void)loadNavigationBar{
-//    UIButton* btn_back= [UIButton buttonWithType:UIButtonTypeCustom];
-//    [btn_back setBackgroundImage:[UIImage imageNamed:@"nav_bar_left_new.png"] forState:UIControlStateNormal];
-//    [btn_back setFrame:CGRectMake( 0, 0, 12*kFloatSize, 17*kFloatSize)];
-//    [btn_back addTarget:self action:@selector(backToUp) forControlEvents:UIControlEventTouchUpInside];
-//    
-//    UIBarButtonItem * listItem = [[UIBarButtonItem alloc] initWithCustomView:btn_back];
-//    self.navigationItem.leftBarButtonItem = listItem;
+     btn_back= [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn_back setBackgroundImage:[UIImage imageNamed:@"nav_bar_left_new.png"] forState:UIControlStateNormal];
+    [btn_back setFrame:CGRectMake( 0, 0, 12*kFloatSize, 17*kFloatSize)];
+    [btn_back addTarget:self action:@selector(backToUp) forControlEvents:UIControlEventTouchUpInside];
+    
+    if ([_str_identif isEqualToString:@"LQJJKSortViewController"]) {
+        UIBarButtonItem * listItem = [[UIBarButtonItem alloc] initWithCustomView:btn_back];
+        self.navigationItem.leftBarButtonItem = listItem;
+    }
+    
     
     
     btn_edit= [UIButton buttonWithType:UIButtonTypeCustom];
@@ -48,18 +53,17 @@
 }
 -(void)backToUp
 {
-    if ([self.navigationController.childViewControllers objectAtIndex:0]==self) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }else
-    {
+//    if ([self.navigationController.childViewControllers objectAtIndex:0]==self) {
+//        [self dismissViewControllerAnimated:YES completion:nil];
+//    }else
+//    {
         [self.navigationController popViewControllerAnimated:YES];
-    }
+//    }
 }
 -(void)viewDidLoad
 {
     
     [super viewDidLoad];
-    
     [self documentFolderPathdb];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillAppear:) name:UIKeyboardWillShowNotification object:nil];
@@ -248,6 +252,19 @@
     
     [db_shop_car close];
     
+    
+    float allPrice=0.0;
+    int goodCount=0;
+    for (OneYiyuanModel* model in dataArray) {
+        
+        if (model.isSelect) {
+            goodCount++;
+            allPrice+=[model.goodCount integerValue];
+        }
+        
+    }
+    totalLab.text=[NSString stringWithFormat:@"共参与%d件商品，总计%.2f元",goodCount,allPrice];
+    
     [mainTableView reloadData];
 
     
@@ -255,7 +272,7 @@
 -(void)loadMainView
 {
     mainTableView=[[UITableView alloc]init];
-    mainTableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-50);
+    mainTableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-40*kFloatSize);
     mainTableView.delegate=self;
     mainTableView.dataSource=self;
     mainTableView.backgroundColor=[GlobalObject colorWithHexString:@"#F4F4F4"];
@@ -264,9 +281,14 @@
     UIView* footVIew=[[UIView alloc]init];
     footVIew.backgroundColor=[UIColor whiteColor];
     mainTableView.tableFooterView=footVIew;
+    int bottom_hight=0;
+//    CGFloat height = kScreenSize.height-64*kFloatSize-55*kFloatSize;
     
+    if ([_str_identif isEqualToString:@"LQJJKSortViewController"]) {
+        bottom_hight=50*kFloatSize;;
+    }
     bottomView=[[UIView alloc]init];
-    bottomView.frame=CGRectMake(0, self.view.frame.size.height-50-45, self.view.frame.size.width, 50);
+    bottomView.frame=CGRectMake(0,467*kFloatSize+bottom_hight, self.view.frame.size.width, 50*kFloatSize);
     bottomView.backgroundColor=[GlobalObject colorWithHexString:@"#F0F0F0"];
     [bottomView.layer setBorderWidth:1.0*kFloatSize];
     
@@ -274,7 +296,7 @@
     [self.view addSubview:bottomView];
     
     allSelectBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    allSelectBtn.frame=CGRectMake(10, (bottomView.frame.size.height-25)/2, 25, 25);
+    allSelectBtn.frame=CGRectMake(10*kFloatSize, (bottomView.frame.size.height-25*kFloatSize)/2, 25*kFloatSize, 25*kFloatSize);
     [allSelectBtn setImage:[UIImage imageNamed:@"shopcar_noselect.png"] forState:UIControlStateNormal];
     [allSelectBtn setImage:[UIImage imageNamed:@"shopcar_select.png"] forState:UIControlStateSelected];
     allSelectBtn.selected=YES;
@@ -282,7 +304,7 @@
     [bottomView addSubview:allSelectBtn];
     
     UILabel* allSelectLab=[[UILabel alloc]init];
-    allSelectLab.frame=CGRectMake(allSelectBtn.frame.origin.x+allSelectBtn.frame.size.width+2, 0, 30, bottomView.frame.size.height);
+    allSelectLab.frame=CGRectMake(allSelectBtn.frame.origin.x+allSelectBtn.frame.size.width+2*kFloatSize, 0, 30*kFloatSize, bottomView.frame.size.height);
     allSelectLab.text=@"全选";
     allSelectLab.font=[UIFont systemFontOfSize:14*kFloatSize];
     allSelectLab.textColor=[GlobalObject colorWithHexString:@"#7E7E7E"];
@@ -337,8 +359,11 @@
 }
 //去购物
 -(void)Click_btn_empty:(UIButton *)btn{
-   NSArray *array = self.navigationController.childViewControllers;
-    [self.navigationController popToViewController:array[0] animated:YES];
+    homeSortVIewController *sort_view=[[homeSortVIewController alloc]init];
+    sort_view.hidesBottomBarWhenPushed=YES;
+    
+    [self.navigationController pushViewController:sort_view animated:YES];
+   
 }
 //提交订单
 -(void)Click_setOrder:(UIButton*)btn

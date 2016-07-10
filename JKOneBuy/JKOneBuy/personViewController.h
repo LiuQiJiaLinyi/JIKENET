@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JKRootViewController.h"
 
-@interface personViewController : UIViewController
+@interface personViewController : JKRootViewController
 
 @end

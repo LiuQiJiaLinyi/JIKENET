@@ -1,19 +1,18 @@
 //
-//  JKGetPwdViewController.m
-//  BoBoBuy
+//  JKRegisterVC.m
+//  JKOneBuy
 //
-//  Created by teaplant on 16/3/3.
+//  Created by LiuQiJia on 16/7/9.
 //  Copyright © 2016年 teaplant. All rights reserved.
 //
 
-#import "JKGetPwdViewController.h"
+#import "JKRegisterVC.h"
 #import "JKProgressHuD.h"
 #import "define.h"
 #import "AFAppDotNetAPIClient.h"
-#import "GlobalObject.h"
 
-@interface JKGetPwdViewController ()<UITextFieldDelegate>{
-
+@interface JKRegisterVC ()<UITextFieldDelegate>{
+    
     UITextField *txt_phone;
     UITextField *txt_captcha;
     UITextField *txt_pwd;
@@ -25,16 +24,17 @@
     NSInteger timeCount;
 }
 
+
 @end
 
-@implementation JKGetPwdViewController
+@implementation JKRegisterVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    [self addTitleViewWithTitle:@"找回密码"];
     
-    [self addTitleViewWithTitle:nil imageName:@"nav_bar_left_new.png" selectedimageName:nil selector:@selector(BackUp) location:YES andFrame:CGRectMake(0, 0, 10* MainSize, 15 * MainSize)];
+    [self addTitleViewWithTitle:@"注册"];
+    
+    [self addTitleViewWithTitle:nil imageName:@"nav_bar_left_new.png" selectedimageName:nil selector:@selector(BackUp) location:YES andFrame:CGRectMake(0, 0, 10*MainSize, 15*MainSize)];
     [self.view setBackgroundColor:[GlobalObject colorWithHexString:@"#FEFFFF"]];
     
     [self loadMianView];
@@ -49,6 +49,8 @@
     //将触摸事件添加到当前view
     [self.view addGestureRecognizer:tapGestureRecognizer];
     
+
+    // Do any additional setup after loading the view.
 }
 
 -(void)keyboardHide:(UITapGestureRecognizer*)tap{
@@ -56,24 +58,24 @@
     [txt_captcha resignFirstResponder];
     [txt_pwd resignFirstResponder];
     [txt_pwdAgain resignFirstResponder];
-
-
-
+    
+    
+    
 }
 -(void)loadMianView{
-
-    UIView *phoneView=[self addmyView:CGRectMake(15*MainSize, 30*MainSize+64, self.view.frame.size.width-30*MainSize, 42*MainSize)];
+    
+    UIView *phoneView=[self addmyView:CGRectMake(15*MainSize, 14*MainSize+64, self.view.frame.size.width-30*MainSize, 29*MainSize)];
     
     [self.view addSubview:phoneView];
     
     
-    UILabel *lbl_Name=[self addMyUILable:CGRectMake(16*MainSize, 13*MainSize, 48*MainSize, 15*MainSize)];
+    UILabel *lbl_Name=[self addMyUILable:CGRectMake(14*MainSize, 8*MainSize, 48*MainSize, 13*MainSize)];
     lbl_Name.text=@"手机号码";
     [phoneView addSubview:lbl_Name];
     
     
-    txt_phone=[self addMyUITextFeild:CGRectMake(75*MainSize, 13*MainSize, 100*MainSize, 15*MainSize)];
-    [txt_phone setPlaceholder:@"输入手机号码"];
+    txt_phone=[self addMyUITextFeild:CGRectMake(lbl_Name.frame.origin.x + lbl_Name.frame.size.width, 8*MainSize, 100*MainSize, 13*MainSize)];
+    [txt_phone setPlaceholder:@"请输入手机号码"];
     [txt_phone setKeyboardType:UIKeyboardTypePhonePad];
     
     [phoneView addSubview:txt_phone];
@@ -86,6 +88,8 @@
     [btn_getChatcha setTitle:@"获取验证码" forState:UIControlStateNormal];
     
     [btn_getChatcha.titleLabel setFont:[UIFont systemFontOfSize:10*MainSize]];
+    [btn_getChatcha.layer setCornerRadius:5*MainSize];
+    [btn_getChatcha.layer setMasksToBounds:YES];
     
     [btn_getChatcha addTarget:self action:@selector(btnClickGet) forControlEvents:UIControlEventTouchUpInside];
     
@@ -93,68 +97,71 @@
     
     
     
-    UIView *chatchaView=[self addmyView:CGRectMake(15*MainSize, 100*MainSize+64, self.view.frame.size.width-30*MainSize, 42*MainSize)];
+    UIView *chatchaView=[self addmyView:CGRectMake(15*MainSize, phoneView.frame.size.height + phoneView.frame.origin.y, self.view.frame.size.width-30*MainSize, 29*MainSize)];
     
     [self.view addSubview:chatchaView];
     
     
-    UILabel *lbl_captcha=[self addMyUILable:CGRectMake(16*MainSize, 13*MainSize, 48*MainSize, 15*MainSize)];
+    UILabel *lbl_captcha=[self addMyUILable:CGRectMake(14*MainSize, 8*MainSize, 48*MainSize, 13*MainSize)];
     lbl_captcha.text=@"验证码";
     [chatchaView addSubview:lbl_captcha];
     
     
-    txt_captcha=[self addMyUITextFeild:CGRectMake(75*MainSize, 13*MainSize, 200*MainSize, 15*MainSize)];
-    [txt_captcha setPlaceholder:@"输入验证码"];
+    txt_captcha=[self addMyUITextFeild:CGRectMake(lbl_captcha.frame.origin.x + lbl_captcha.frame.size.width, 8*MainSize, 100*MainSize, 13*MainSize)];
+    [txt_captcha setPlaceholder:@"请输入验证码"];
     [txt_captcha setKeyboardType:UIKeyboardTypeNumberPad];
     
     [chatchaView addSubview:txt_captcha];
     
     
-    UIView *pwdView=[self addmyView:CGRectMake(15*MainSize, 170*MainSize+64, self.view.frame.size.width-30*MainSize, 42*MainSize)];
-    
-    [self.view addSubview:pwdView];
-    
+    UIView *pwdView=[self addmyView:CGRectMake(14*MainSize, chatchaView.frame.size.height + chatchaView.frame.origin.y, self.view.frame.size.width-30*MainSize, 42*MainSize)];
     
     UILabel *lbl_pwd=[self addMyUILable:CGRectMake(16*MainSize, 13*MainSize, 48*MainSize, 15*MainSize)];
-    lbl_pwd.text=@"新密码";
+    lbl_pwd.text=@"密码";
     [pwdView addSubview:lbl_pwd];
     
-    
-    txt_pwd=[self addMyUITextFeild:CGRectMake(75*MainSize, 13*MainSize, 200*MainSize, 15*MainSize)];
-    [txt_pwd setPlaceholder:@"输入新密码"];
+    txt_pwd=[self addMyUITextFeild:CGRectMake(lbl_pwd.frame.origin.x + lbl_pwd.frame.size.width, 8*MainSize, 100*MainSize, 13*MainSize)];
+    [txt_pwd setPlaceholder:@"请输入新密码"];
     [txt_pwd setSecureTextEntry:YES];
     
     [txt_pwd setDelegate:self];
     
     [pwdView addSubview:txt_pwd];
+    [self.view addSubview:pwdView];
     
-    UIView *pwdAView=[self addmyView:CGRectMake(15*MainSize, 240*MainSize+64, self.view.frame.size.width-30*MainSize, 42*MainSize)];
+    
+    
+    UIView *pwdAView=[self addmyView:CGRectMake(15*MainSize, pwdView.frame.size.height + pwdView.frame.origin.y, self.view.frame.size.width-30*MainSize, 42*MainSize)];
     
     [self.view addSubview:pwdAView];
     
     
-    UILabel *lbl_pwdA=[self addMyUILable:CGRectMake(16*MainSize, 13*MainSize, 48*MainSize, 15*MainSize)];
+    UILabel *lbl_pwdA=[self addMyUILable:CGRectMake(14*MainSize, 8*MainSize, 48*MainSize, 13*MainSize)];
     lbl_pwdA.text=@"确认密码";
     [pwdAView addSubview:lbl_pwdA];
     
     
-    txt_pwdAgain=[self addMyUITextFeild:CGRectMake(75*MainSize, 13*MainSize, 200*MainSize, 15*MainSize)];
+    
+    txt_pwdAgain=[self addMyUITextFeild:CGRectMake(lbl_pwdA.frame.origin.x + lbl_pwdA.frame.size.width, 8*MainSize, 100*MainSize, 13*MainSize)];
     [txt_pwdAgain setPlaceholder:@"再次输入新密码"];
     [txt_pwdAgain setKeyboardType:UIKeyboardTypeDefault];
     [txt_pwdAgain setSecureTextEntry:YES];
-
+    
     [txt_pwdAgain setDelegate:self];
     [pwdAView addSubview:txt_pwdAgain];
     
     
+    [self setCoustomRulerView];
     
-    UIButton *btn_Login=[[UIButton alloc]initWithFrame:CGRectMake(15*MainSize, 308*MainSize+64, self.view.frame.size.width-30*MainSize, 44*MainSize)];
+    
+    
+    UIButton *btn_Login=[[UIButton alloc]initWithFrame:CGRectMake(15*MainSize, 274*MainSize, self.view.frame.size.width-30*MainSize, 30*MainSize)];
     
     [btn_Login setBackgroundColor:[GlobalObject colorWithHexString:@"#EE4A7E"]];
     
-    [btn_Login setTitle:@"提交" forState:UIControlStateNormal];
+    [btn_Login setTitle:@"立即注册" forState:UIControlStateNormal];
     
-    [btn_Login.layer setCornerRadius:20*MainSize];
+    [btn_Login.layer setCornerRadius:15*MainSize];
     [btn_Login.layer setMasksToBounds:YES];
     
     
@@ -164,6 +171,58 @@
     
     
     
+}
+
+-(void)setCoustomRulerView
+{
+    UIButton * accep = [[UIButton alloc] initWithFrame:CGRectMake(95 * MainSize, 250 * MainSize, 10 * MainSize, 10 * MainSize)];
+#pragma mark --用户同意状态有图片后删掉--
+    accep.backgroundColor = [GlobalObject colorWithHexString:@"#EE4A7E"];
+    [accep setImage:[UIImage imageNamed:@"cus_accept"] forState:UIControlStateSelected];
+    [accep setTag:1034];
+    [accep addTarget:self action:@selector(acceptTheLaw:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    UILabel * lbl_tips = [[UILabel alloc] initWithFrame:CGRectMake(accep.frame.origin.x + accep.frame.size.width +5,250 * MainSize,60* MainSize, 10 * MainSize)];
+    [accep setTag:1035];
+    lbl_tips.text = @"同意并接受,";
+    [lbl_tips setTextColor:[GlobalObject colorWithHexString:@"#A7A7A7"]];
+    lbl_tips.font = [UIFont systemFontOfSize:(8.f/320.f)*[UIScreen mainScreen].bounds.size.width];
+    
+    
+    
+    UIButton * cusRuler = [[UIButton alloc] initWithFrame:CGRectMake(lbl_tips.frame.origin.x + lbl_tips.frame.size.width, 250 * MainSize, 72 * MainSize, 10 * MainSize)];
+    [cusRuler setTitleColor:[GlobalObject colorWithHexString:@"#9BC4FE"] forState:UIControlStateNormal];
+    cusRuler.alpha = 1;
+    [cusRuler addTarget:self action:@selector(acceptTheLaw:) forControlEvents:UIControlEventTouchUpInside];
+
+    
+    [self.view addSubview:accep];
+    [self.view addSubview:lbl_tips];
+    [self.view addSubview:cusRuler];
+
+}
+
+-(void)acceptTheLaw:(UIButton *)button
+{
+    switch (button.tag) {
+        case 1034:
+        {
+            button.selected =YES;
+        }
+            break;
+        case 1035:
+        {
+            
+            //推到规则页面
+            //[self ];
+        }
+            break;
+            
+        default:
+            break;
+    }
+
 }
 
 -(void)btnClickGet{
@@ -180,7 +239,7 @@
         
         NSDictionary *dic=[NSDictionary dictionaryWithObject:txt_phone.text forKey:@"tel"];
         
-       // NSString *url=[NSString stringWithFormat:@"%@%@",COMMON_HEAD,GetYZM];
+        // NSString *url=[NSString stringWithFormat:@"%@%@",COMMON_HEAD,GetYZM];
         NSString *url;
         
         [[AFAppDotNetAPIClient sharedClient]POST:url parameters:dic progress:nil success:^(NSURLSessionDataTask *operation,id responseObject){
@@ -190,11 +249,11 @@
                 
                 if ([[responseObject objectForKey:@"code"] isEqualToString:@"200"]) {
                     
-                  
+                    
                     [[JKProgressHuD shareJKProgressHuD]showProgreessText:@"验证码已发送,请注意查收" andView:self.view];
                     
                 }else{
-                   
+                    
                     
                     
                 }
@@ -208,17 +267,17 @@
             
         }];
         
-
+        
     }else{
-    
+        
         [[JKProgressHuD shareJKProgressHuD ]showProgreessText:@"请输入手机号码" andView:self.view];
         
         
     }
     
-
     
-
+    
+    
     
 }
 
@@ -231,17 +290,17 @@
         [btn_getChatcha setTitle:str forState:UIControlStateNormal];
         
         [btn_getChatcha setBackgroundColor:[GlobalObject colorWithHexString:@"#515151"]];
-
+        
         
     }else{
         [timer invalidate];
         
-    
+        
         timeCount=60;
         [btn_getChatcha setTitle:@"获取验证码" forState:UIControlStateNormal];
         btn_getChatcha.enabled=YES;
         [btn_getChatcha setBackgroundColor:[GlobalObject colorWithHexString:@"#EE4A7E"]];
-
+        
         
     }
     
@@ -251,7 +310,9 @@
 
 -(void)btnClickSend{
     
-    if (![GlobalObject isPureNumandCharacters:txt_phone.text]) {
+    if ([self isPureNumandCharacters:txt_phone.text])
+    {
+        [self showAlertView:@"包含非数字"];
         return;
     }
     
@@ -265,22 +326,38 @@
                 
                 
                 NSDictionary *dic=@{@"tel":txt_phone.text,@"yzm":txt_captcha.text,@"pwd":txt_pwd.text};
+#pragma mark ––––网址更改处––––––
+                // NSString *url=[NSString stringWithFormat:@"%@%@",COMMON_HEAD,ModifyPWD];
+                NSString *url = @"http://c.app.zckj.159.net/API/Api.ashx?action=user_tel_reg&tel=15263986077&yzm=123456&pwd=123456®type=2";
                 
-               // NSString *url=[NSString stringWithFormat:@"%@%@",COMMON_HEAD,ModifyPWD];
-                NSString *url;
+                __weak  __block JKRegisterVC * weakself = self;
                 
-                [[AFAppDotNetAPIClient sharedClient]POST:url parameters:dic progress:nil success:^(NSURLSessionDataTask *operation,id responseObject){
-                    
+                [[AFAppDotNetAPIClient sharedClient]POST:url parameters:nil progress:nil success:^(NSURLSessionDataTask *operation,id responseObject){
+                    /*{
+                     "code":"200",
+                     "sex":0,
+                     "city":null,
+                     "country":null,
+                     "headimgurl":null,
+                     "nickname":"15263986083",
+                     "openid":"0",
+                     "province":null,
+                     "unionid":"0"
+                     }
+                     */
                     [[JKProgressHuD shareJKProgressHuD]dismiss];
                     if ([responseObject isKindOfClass:[NSDictionary class]]) {
                         
                         if ([[responseObject objectForKey:@"code"]  isEqualToString:@"200"]) {
-                                [[JKProgressHuD shareJKProgressHuD]showProgreessText:@"密码设置成功"andView:self.view];
+                            [[JKProgressHuD shareJKProgressHuD]showProgreessText:@"密码设置成功"andView:self.view];
                             [self.navigationController popViewControllerAnimated:YES];
+                            //回调回登录页面
+                            [weakself popoverPresentationController];
+                            
                             
                         }else{
-                            [[JKProgressHuD shareJKProgressHuD]showProgreessText:[responseObject objectForKey:@"message"] andView:self.view];
-
+                            [weakself showAlertView:@"注册失败"];
+                            
                         }
                         
                     }
@@ -292,9 +369,21 @@
                     
                 }];
                 
-
+                
+            }
+            else
+            {
+                [self showAlertView:@"两次输入的秘码不一致！"];
             }
         }
+        else
+        {
+            [self showAlertView:@"验证码不能为空！"];
+        }
+    }
+    else
+    {
+        [self showAlertView:@"电话号码不能为空！"];
     }
     
     
@@ -305,12 +394,29 @@
     UIView *phoneView=[[UIView alloc]initWithFrame:frame];
     [phoneView.layer setBorderWidth:1];
     [phoneView.layer setBorderColor:[GlobalObject colorWithHexString:@"#F3F4F5"].CGColor];
-    [phoneView.layer setCornerRadius:20*MainSize];
+    //[phoneView.layer setCornerRadius:20*MainSize];
     [phoneView.layer setMasksToBounds:YES];
     return phoneView;
     
 }
 
+//判断呢是否为数字
+- (BOOL)isPureNumandCharacters:(NSString *)string
+{
+    string = [string stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
+    if(string.length > 0)
+    {
+        return NO;
+    }
+    return YES;
+}
+
+-(void)showAlertView:(NSString * )massgae
+{
+    UIAlertView * alert =[[UIAlertView alloc] initWithTitle:@"提示" message:massgae delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+    [alert show];
+    
+}
 
 -(UILabel *)addMyUILable:(CGRect)frame{
     
@@ -344,10 +450,11 @@
 }
 
 -(void)BackUp{
-
+    
     [self.navigationController popViewControllerAnimated:YES];
     
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

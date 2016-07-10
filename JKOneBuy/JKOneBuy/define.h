@@ -10,7 +10,10 @@
 #define define_h
 
 #define kScreenSize [UIScreen mainScreen].bounds.size
-#define kFloatSize [UIScreen mainScreen].bounds.size.width/320
+#define kFloatSize [UIScreen mainScreen].bounds.size.width/320.f
+
+#define kFloatSizeHeight [UIScreen mainScreen].bounds.size.height/608.f
+
 #define UserDefaults [NSUserDefaults standardUserDefaults]
 
 
